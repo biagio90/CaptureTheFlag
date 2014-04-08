@@ -2,10 +2,12 @@
 using System.Collections;
 
 public class Shooting : MonoBehaviour {
+	public string enemyTag = "team2";
+
 	public float sight = 15.0f;
 	public GameObject bullet;
 	
-	public float delay = 0.1f;
+	public float delay = 0.8f;
 	
 	private float nextTime = 0.0f;
 
@@ -25,7 +27,7 @@ public class Shooting : MonoBehaviour {
 			for (float angle = -40.0f; angle < 40.0f; angle += 0.5f) {
 				ray.direction = Quaternion.Euler(0, angle, 0) * direction;
 				if (Physics.Raycast(ray, out hit, sight)) {
-					if (hit.collider.tag == "team2" ) {
+					if (hit.collider.tag == enemyTag ) {
 						shoot(hit.transform.position);
 						return;
 					}
@@ -37,11 +39,12 @@ public class Shooting : MonoBehaviour {
 	private void shoot (Vector3 enemyPos) {
 		Vector3 t = transform.position;
 		//Vector3 direction = (enemyPos - t).normalized ;
-		t.y = t.y + 5;
+		t.y = t.y + 2.5f;
 		GameObject shoot = (GameObject) Instantiate(bullet, t, Quaternion.identity);
 		Bullet script = shoot.GetComponent<Bullet> ();
 		script.destination = enemyPos;
-		script.speed = 5;
+		script.speed = 15;
+		script.enemyTag = enemyTag;
 		script.go = true;
 
 	}

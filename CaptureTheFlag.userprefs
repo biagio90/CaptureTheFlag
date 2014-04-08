@@ -1,12 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\Shooting\Shooting.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\Flag\PickUpFlag.cs">
     <Files>
-      <File FileName="Assets\Script\Movement\MoveRobot.cs" Line="60" Column="6" />
-      <File FileName="Assets\Script\Shooting\Shooting.cs" Line="42" Column="21" />
-      <File FileName="Assets\Script\Shooting\Bullet.cs" Line="5" Column="19" />
-      <File FileName="..\Lab1Final\Assets\Script\Controller\DiscreteMouseController.cs" Line="6" Column="25" />
-      <File FileName="Assets\Script\Shooting\DestroyByContact.cs" Line="17" Column="3" />
+      <File FileName="Assets\Script\Flag\PickUpFlag.cs" Line="5" Column="32" />
+      <File FileName="Assets\Script\Shooting\Bullet.cs" Line="18" Column="3" />
+      <File FileName="Assets\Script\Shooting\Shooting.cs" Line="5" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
