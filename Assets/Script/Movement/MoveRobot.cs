@@ -13,6 +13,7 @@ public class MoveRobot : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		destination = destinationObj.transform.position;
+		destination.y = transform.position.y;
 	}
 	
 	// Update is called once per frame

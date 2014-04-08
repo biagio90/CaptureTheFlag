@@ -2,8 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\Shooting\Shooting.cs">
     <Files>
-      <File FileName="Assets\Script\Movement\MoveRobot.cs" Line="49" Column="42" />
-      <File FileName="Assets\Script\Shooting\Shooting.cs" Line="35" Column="3" />
+      <File FileName="Assets\Script\Movement\MoveRobot.cs" Line="60" Column="6" />
+      <File FileName="Assets\Script\Shooting\Shooting.cs" Line="42" Column="21" />
+      <File FileName="Assets\Script\Shooting\Bullet.cs" Line="5" Column="19" />
+      <File FileName="..\Lab1Final\Assets\Script\Controller\DiscreteMouseController.cs" Line="6" Column="25" />
+      <File FileName="Assets\Script\Shooting\DestroyByContact.cs" Line="17" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
