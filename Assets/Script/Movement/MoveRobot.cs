@@ -3,12 +3,14 @@ using System.Collections;
 
 public class MoveRobot : MonoBehaviour {
 	public GameObject destinationObj;
+	
+	public bool hasFlag = false;
 
 	public int speed = 10;
 	private float sight = 5;
 	public float turnSpeed = 4;
 
-	private Vector3 destination = Vector3.zero;
+	public Vector3 destination = Vector3.zero;
 
 	// Use this for initialization
 	void Start () {

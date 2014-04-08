@@ -38,12 +38,13 @@ public class Shooting : MonoBehaviour {
 
 	private void shoot (Vector3 enemyPos) {
 		Vector3 t = transform.position;
-		//Vector3 direction = (enemyPos - t).normalized ;
-		t.y = t.y + 2.5f;
+		Vector3 direction = (enemyPos - t).normalized;
+		t = t + direction * 1;
+		t.y = transform.position.y;
 		GameObject shoot = (GameObject) Instantiate(bullet, t, Quaternion.identity);
 		Bullet script = shoot.GetComponent<Bullet> ();
 		script.destination = enemyPos;
-		script.speed = 15;
+		script.speed = 10;
 		script.enemyTag = enemyTag;
 		script.go = true;
 
@@ -59,7 +60,7 @@ public class Shooting : MonoBehaviour {
 		for (float angle = -40.0f; angle < 40.0f; angle += 2.0f) {
 			//ray.direction = Quaternion.Euler(0, angle, 0) * direction;
 			Vector3 d = Quaternion.Euler(0, angle, 0) * direction;
-			Gizmos.DrawRay(transform.position, d);
+			//Gizmos.DrawRay(transform.position, d);
 		}
 
 	}
