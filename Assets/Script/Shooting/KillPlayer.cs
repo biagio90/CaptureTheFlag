@@ -47,10 +47,14 @@ public class KillPlayer : MonoBehaviour {
 		MonoBehaviour[] scripts = GetComponents<MonoBehaviour> ();
 		foreach(MonoBehaviour script in scripts) {
 			if (script != this) {
-				//script.enabled = false;
+				script.enabled = false;
 			}
 		}
 		rigidbody.velocity = Vector3.zero;
 		transform.position = respawn.transform.position;
+		mover.enabled = true;
+		GetComponent<KillPlayer> ().enabled = true;
+		GetComponent<Shooting> ().enabled = true;
+
 	}
 }

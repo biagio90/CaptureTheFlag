@@ -24,7 +24,9 @@ public class MoveRobotAstar : MonoBehaviour {
 	public void newDestination(Vector3 destination) {
 		pathAstar = Astar.getPath(transform.position, destination);
 		pathAstar.Reverse();
-		pathAstar.Add(destination);
+		if (pathAstar != null && pathAstar.Count > 0)
+			pathAstar.Add(destination);
+
 		indexAstar = 0;
 		go = true;
 	}

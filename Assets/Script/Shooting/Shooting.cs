@@ -44,12 +44,12 @@ public class Shooting : MonoBehaviour {
 		GameObject shoot = (GameObject) Instantiate(bullet, t, Quaternion.identity);
 		Bullet script = shoot.GetComponent<Bullet> ();
 		script.destination = enemyPos;
-		script.speed = 10;
+		script.speed = 15;
 		script.enemyTag = enemyTag;
 		script.go = true;
 
 	}
-
+	/*
 	void OnDrawGizmos() {
 		Gizmos.color = Color.red;
 		Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
@@ -60,8 +60,8 @@ public class Shooting : MonoBehaviour {
 		for (float angle = -40.0f; angle < 40.0f; angle += 2.0f) {
 			//ray.direction = Quaternion.Euler(0, angle, 0) * direction;
 			Vector3 d = Quaternion.Euler(0, angle, 0) * direction;
-			//Gizmos.DrawRay(transform.position, d);
+			Gizmos.DrawRay(transform.position, d);
 		}
-
 	}
+	*/
 }

@@ -2,22 +2,23 @@
 using System.Collections;
 
 public class attackRole : MonoBehaviour {
-	private bool go = true;
+//	private bool go = true;
+	private Vector3 dest;
 
 	// Use this for initialization
 	void Start () {
-		
+		dest = transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(go) {
+		if(Vector3.Distance(transform.position, dest) < 1) {
 			float x = Random.Range(-20, 20);
 			float z = Random.Range(-20, 20);
-			Vector3 dest = new Vector3(x, 1, z);
+			dest = new Vector3(x, 1, z);
 			Debug.Log(dest);
 			GetComponent<MoveRobotAstar>().newDestination(dest);
-			go = false;
+//			go = false;
 		}
 	}
 }

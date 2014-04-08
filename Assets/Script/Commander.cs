@@ -6,14 +6,17 @@ public class Commander : MonoBehaviour {
 
 	public int team;
 
-	public float respownArea = 5;
+	public float respownArea = 3;
 
 	private GameObject[] myTeam;
-	private GameObject[] enemyTeam;
+//	private GameObject[] enemyTeam;
 	
 	public GameObject flagMyTeam;
 	public GameObject flagEnemyTeam;
-	
+
+	public GameObject flagPrefabs;
+	private Vector3 flagPos;
+
 	public GameObject baseMyTeam;
 	public GameObject baseEnemyTeam;
 
@@ -26,11 +29,13 @@ public class Commander : MonoBehaviour {
 	void Start () {
 		if(team == 1){
 			myTeam = GameObject.FindGameObjectsWithTag ("team1");
-			enemyTeam = GameObject.FindGameObjectsWithTag ("team2");
+//			enemyTeam = GameObject.FindGameObjectsWithTag ("team2");
 		} else {
 			myTeam = GameObject.FindGameObjectsWithTag ("team2");
-			enemyTeam = GameObject.FindGameObjectsWithTag ("team1");
+//			enemyTeam = GameObject.FindGameObjectsWithTag ("team1");
 		}
+		flagPos = flagMyTeam.transform.position;
+
 		/*
 		rolesToAssigne.Add ("chatchFlag");
 		rolesToAssigne.Add ("helpFlag");
@@ -50,7 +55,8 @@ public class Commander : MonoBehaviour {
 				gameController.increaseScore(team);
 				mover.hasFlag = false;
 				player.transform.Find("flag").gameObject.SetActive(false);
-				flagMyTeam.SetActive(true);
+				//flagMyTeam.SetActive(true);
+				Instantiate(flagPrefabs, flagPos, Quaternion.identity);
 			}
 
 			if(!mover.hasRole){
@@ -62,7 +68,7 @@ public class Commander : MonoBehaviour {
 						role.enabled = true;
 						playerAssignedFlag = true;
 						mover.role = "catchFlag";
-						Debug.Log ("catcher settato");
+						//Debug.Log ("catcher settato");
 					} else if(!playerAssignedHelp) {
 						playerAssignedHelp = true;
 						helpFlagRole role = player.GetComponent<helpFlagRole>();

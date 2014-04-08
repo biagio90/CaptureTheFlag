@@ -23,6 +23,5 @@ public class GameController : MonoBehaviour {
 	public int getScore(int team){
 		if(team == 1) return scoreTeam1;
 		else 		  return scoreTeam2;
-		return 0;
 	}
 }
