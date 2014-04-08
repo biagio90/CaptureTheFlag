@@ -3,6 +3,8 @@ using System.Collections;
 
 public class MoveRobotAstar : MonoBehaviour {
 	public bool hasFlag = false;
+	public bool hasRole = false;
+	public string role;
 
 	private AstarCreator Astar = new AstarCreator(55, 2);
 
@@ -32,7 +34,7 @@ public class MoveRobotAstar : MonoBehaviour {
 		if(go && pathAstar != null && pathAstar.Count != 0) {
 			Vector3 destination = (Vector3) pathAstar[indexAstar];
 			//Debug.Log(indexAstar);
-			
+
 			destination.y = mainY;
 			float d = Vector3.Distance(transform.position, destination);
 			if (d > 0.5f) {
@@ -60,4 +62,5 @@ public class MoveRobotAstar : MonoBehaviour {
 		
 		rigidbody.velocity = direction * speed;
 	}
+
 }

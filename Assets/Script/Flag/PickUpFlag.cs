@@ -9,7 +9,8 @@ public class PickUpFlag : MonoBehaviour {
 	{
 		if (other.tag == teamTag)
 		{
-			Destroy(gameObject);
+			//Destroy(gameObject);
+			gameObject.SetActive(false);
 			MoveRobotAstar player = other.GetComponent<MoveRobotAstar>();
 			player.hasFlag = true;
 			//other.renderer.material.color = Color.red;

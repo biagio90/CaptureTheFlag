@@ -36,12 +36,20 @@
 -define:ENABLE_PROFILER
 -define:UNITY_EDITOR
 -define:UNITY_EDITOR_WIN
+"Assets/Script/Bots Tasks/RandomAttack.cs"
+Assets/Script/Commander.cs
 Assets/Script/Flag/PickUpFlag.cs
 Assets/Script/GameController.cs
+Assets/Script/GameControllerOld.cs
+Assets/Script/Interface/ScoreLabel.cs
 Assets/Script/Movement/Astar/AstarCreator.cs
 Assets/Script/Movement/MoveRobot.cs
 Assets/Script/Movement/MoveRobotAstar.cs
+Assets/Script/Role/attackRole.cs
+Assets/Script/Role/catchFlagRole.cs
+Assets/Script/Role/helpFlagRole.cs
 Assets/Script/Shooting/Bullet.cs
+Assets/Script/Shooting/KillPlayer.cs
 Assets/Script/Shooting/Shooting.cs
 -r:"C:/Program Files (x86)/Unity/Editor/Data/Mono\lib/mono/unity\System.Runtime.Serialization.dll"
 -r:"C:/Program Files (x86)/Unity/Editor/Data/Mono\lib/mono/unity\System.Xml.Linq.dll"

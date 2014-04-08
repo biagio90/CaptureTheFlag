@@ -24,7 +24,8 @@ public class Bullet : MonoBehaviour {
 		if (other.tag == enemyTag)
 		{
 			//Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
-			Destroy(other.gameObject);
+			//Destroy(other.gameObject);
+			other.gameObject.GetComponent<KillPlayer>().killPlayer();
 		}
 
 		if (other.tag != "bullet"){
