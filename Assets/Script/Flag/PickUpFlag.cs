@@ -10,10 +10,8 @@ public class PickUpFlag : MonoBehaviour {
 		if (other.tag == teamTag)
 		{
 			Destroy(gameObject);
-			//gameObject.SetActive(false);
-			MoveRobotAstar player = other.GetComponent<MoveRobotAstar>();
+			PlayerController player = other.GetComponent<PlayerController>();
 			player.hasFlag = true;
-			//other.renderer.material.color = Color.red;
 			other.gameObject.transform.Find("flag").gameObject.SetActive(true);
 		} else if (other.tag != "bullet"){
 			transform.position = flagPos;

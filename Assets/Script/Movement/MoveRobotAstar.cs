@@ -2,10 +2,6 @@
 using System.Collections;
 
 public class MoveRobotAstar : MonoBehaviour {
-	public bool hasFlag = false;
-	public bool hasRole = false;
-	public string role;
-
 	private AstarCreator Astar = new AstarCreator(55, 2);
 
 	public float speed = 10f;
