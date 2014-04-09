@@ -44,7 +44,7 @@ public class Shooting : MonoBehaviour {
 		GameObject shoot = (GameObject) Instantiate(bullet, t, Quaternion.identity);
 		Bullet script = shoot.GetComponent<Bullet> ();
 		script.destination = enemyPos;
-		script.speed = 15;
+		script.speed = 20;
 		script.enemyTag = enemyTag;
 		script.go = true;
 

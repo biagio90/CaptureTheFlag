@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PickUpFlag : MonoBehaviour {
 	public string teamTag;
-	//public Material hasFlagMaterial;
+	public Vector3 flagPos;
 
 	void OnTriggerEnter(Collider other) 
 	{
@@ -15,6 +15,8 @@ public class PickUpFlag : MonoBehaviour {
 			player.hasFlag = true;
 			//other.renderer.material.color = Color.red;
 			other.gameObject.transform.Find("flag").gameObject.SetActive(true);
+		} else if (other.tag != "bullet"){
+			transform.position = flagPos;
 		}
 	}
 }

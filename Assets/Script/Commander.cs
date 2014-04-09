@@ -45,37 +45,43 @@ public class Commander : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		foreach (GameObject player in myTeam) {
-			bool isRespawnZone = inRespawnZone(player);
-			MoveRobotAstar mover = player.GetComponent<MoveRobotAstar>();
+			KillPlayer kill = player.GetComponent<KillPlayer>();
+			if(!kill.dead) {
+				
+				bool isRespawnZone = inRespawnZone(player);
+				MoveRobotAstar mover = player.GetComponent<MoveRobotAstar>();
 
-			if(isRespawnZone && mover.hasFlag) {
-				gameController.increaseScore(team);
-				mover.hasFlag = false;
-				player.transform.Find("flag").gameObject.SetActive(false);
-				//flagMyTeam.SetActive(true);
-				Instantiate(flagPrefabs, flagPos, Quaternion.identity);
-			}
+				if(isRespawnZone && mover.hasFlag) {
+					gameController.increaseScore(team);
+					mover.hasFlag = false;
+					player.transform.Find("flag").gameObject.SetActive(false);
+					//flagMyTeam.SetActive(true);
+					Instantiate(flagPrefabs, flagPos, Quaternion.identity);
+				}
 
-			if(!mover.hasRole){
-				if (isRespawnZone) {
-					if(!playerAssignedFlag) {
-						catchFlagRole role = player.GetComponent<catchFlagRole>();
-						role.flagTag = flagTag;
-						role.basePos = baseMyTeam;
-						role.enabled = true;
-						playerAssignedFlag = true;
-						mover.role = "catchFlag";
-						//Debug.Log ("catcher settato");
-					} else if(!playerAssignedHelp) {
-						playerAssignedHelp = true;
-						helpFlagRole role = player.GetComponent<helpFlagRole>();
-						role.enabled = true;
-						mover.role = "helpFlag";
-					} else {
-						player.GetComponent<attackRole>().enabled = true;
-						mover.role = "attack";
+				if(!mover.hasRole){
+					if (isRespawnZone) {
+						if(!playerAssignedFlag) {
+							catchFlagRole role = player.GetComponent<catchFlagRole>();
+							role.flagTag = flagTag;
+							role.basePos = baseMyTeam;
+							role.enabled = true;
+							playerAssignedFlag = true;
+							mover.role = "catchFlag";
+							//Debug.Log ("catcher settato");
+						} else if(!playerAssignedHelp) {
+							playerAssignedHelp = true;
+							helpFlagRole role = player.GetComponent<helpFlagRole>();
+							role.enabled = true;
+							mover.role = "helpFlag";
+						} else {
+							attackRole role = player.GetComponent<attackRole>();
+							role.dest = baseMyTeam.transform.position;
+							role.enabled = true;
+							mover.role = "attack";
+						}
+						mover.hasRole = true;
 					}
-					mover.hasRole = true;
 				}
 			}
 		}

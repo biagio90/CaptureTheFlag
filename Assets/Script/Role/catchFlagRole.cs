@@ -17,7 +17,12 @@ public class catchFlagRole : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!mover.hasFlag && !goForward) {
-			mover.newDestination(getFlagObject().transform.position);
+			GameObject flag = getFlagObject();
+			if(flag == null ) {
+				GetComponent<KillPlayer>().killPlayer();
+				return;
+			}
+			mover.newDestination(flag.transform.position);
 			//Debug.Log("Va verso la bandiera");
 			goForward = true;
 			cameBack = false;

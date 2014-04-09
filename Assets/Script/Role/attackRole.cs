@@ -3,7 +3,7 @@ using System.Collections;
 
 public class attackRole : MonoBehaviour {
 //	private bool go = true;
-	private Vector3 dest;
+	public Vector3 dest;
 
 	// Use this for initialization
 	void Start () {
@@ -16,7 +16,7 @@ public class attackRole : MonoBehaviour {
 			float x = Random.Range(-20, 20);
 			float z = Random.Range(-20, 20);
 			dest = new Vector3(x, 1, z);
-			Debug.Log(dest);
+			//Debug.Log(dest);
 			GetComponent<MoveRobotAstar>().newDestination(dest);
 //			go = false;
 		}

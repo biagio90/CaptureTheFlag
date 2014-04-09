@@ -24,9 +24,13 @@ public class KillPlayer : MonoBehaviour {
 	void Update () {
 		if(dead) {
 			timer += Time.deltaTime;
+			//Debug.Log("time"+timer);
 			if (timer > timeToRespoun){
 				timer = 0;
 				dead = false;
+
+				mover.enabled = true;
+				GetComponent<Shooting> ().enabled = true;
 			}
 		}
 	}
@@ -59,8 +63,9 @@ public class KillPlayer : MonoBehaviour {
 		}
 		rigidbody.velocity = Vector3.zero;
 		transform.position = respawn.transform.position;
-		mover.enabled = true;
+		mover.newDestination (respawn.transform.position);
 		GetComponent<KillPlayer> ().enabled = true;
-		GetComponent<Shooting> ().enabled = true;
+
+		dead = true;
 	}
 }
