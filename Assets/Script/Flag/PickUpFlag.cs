@@ -11,7 +11,7 @@ public class PickUpFlag : MonoBehaviour {
 		{
 			Destroy(gameObject);
 			PlayerController player = other.GetComponent<PlayerController>();
-			player.hasFlag = true;
+			player.catchTheFLag();
 			other.gameObject.transform.Find("flag").gameObject.SetActive(true);
 		} else if (other.tag != "bullet"){
 			transform.position = flagPos;

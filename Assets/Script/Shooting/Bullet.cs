@@ -4,7 +4,7 @@ using System.Collections;
 public class Bullet : MonoBehaviour {
 	public string enemyTag;
 
-	public float speed = 10.0f;
+	public float speed;
 
 	public Vector3 destination;
 	public bool go = false;

@@ -21,21 +21,36 @@ public class Commander : MonoBehaviour {
 	public bool playerAssignedFlag = false;
 	public bool playerAssignedHelp = false;
 
-	void Start () {
+	private bool firstUpdate = true;
+
+	void Start () {/*
 		if(team == 1){
 			myTeam = GameObject.FindGameObjectsWithTag ("team1");
 		} else {
 			myTeam = GameObject.FindGameObjectsWithTag ("team2");
 		}
 		flagPos = getFlagObject ().transform.position;
+		*/
 	}
 
 	void Update () {
+		if (firstUpdate) {
+			firstUpdate = false;
+			if(team == 1){
+				myTeam = GameObject.FindGameObjectsWithTag ("team1");
+			} else {
+				myTeam = GameObject.FindGameObjectsWithTag ("team2");
+			}
+			flagPos = getFlagObject ().transform.position;
+		}
+
 		if(!checkCatcher()) {
 			GameObject closest = findClosestToFlag();
-			PlayerController playerController = closest.GetComponent<PlayerController>();
-			playerController.role = Roles.Catcher;
-			playerAssignedFlag = true;
+			if(closest != null ) {
+				PlayerController playerController = closest.GetComponent<PlayerController>();
+				playerController.changeRole(Roles.Catcher);
+				playerAssignedFlag = true;
+			}
 		}
 
 		foreach (GameObject player in myTeam) {
@@ -85,7 +100,7 @@ public class Commander : MonoBehaviour {
 	private GameObject findClosestToFlag() {
 		Vector3 flagPos = getFlagObject ().transform.position;
 		GameObject closest = null;
-		float minDistance = 1000;
+		float minDistance = 10000;
 		foreach (GameObject player in myTeam) {
 			PlayerController playerController = player.GetComponent<PlayerController>();
 			if (!playerController.dead) {

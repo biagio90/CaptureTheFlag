@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
 	public Commander commander;
 	public GameObject respawn;
 	public GameObject flagPrefabs;
+	private GameObject[] myTeam;
 
 	//for commander
 	public bool hasFlag = false;
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour {
 		shooting = GetComponent<Shooting> ();
 
 		dest = transform.position;
+		myTeam = GameObject.FindGameObjectsWithTag (tag);
 	}
 
 	void Update () {
@@ -125,7 +127,26 @@ public class PlayerController : MonoBehaviour {
 		dead = true;
 	}
 
+	public void catchTheFLag() {
+		hasFlag = true;
+		if (role != Roles.Catcher) {
+			changeRole(Roles.Catcher);
+		}
+	}
+
 	private GameObject getFlagCurrent() {
 		return GameObject.FindGameObjectWithTag(flagTag);
+	}
+
+	private void changeRoleToCatcher() {
+		foreach (GameObject player in myTeam) {
+			if(player != this) {
+				PlayerController playerController = player.GetComponent<PlayerController>();
+				if(playerController.role == Roles.Catcher){
+					playerController.changeRole(Roles.Attacker);
+					return;
+				}
+			}
+		}
 	}
 }

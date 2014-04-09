@@ -4,7 +4,8 @@ using System.Collections;
 public class Shooting : MonoBehaviour {
 	public string enemyTag = "team2";
 
-	public float sight = 15.0f;
+	public float viewLength = 15.0f;
+	public float viewAngle  = 50.0f;
 	public GameObject bullet;
 	
 	public float delay = 0.8f;
@@ -24,9 +25,9 @@ public class Shooting : MonoBehaviour {
 			RaycastHit hit = new RaycastHit ();
 			Ray ray = new Ray(transform.position, direction);
 
-			for (float angle = -40.0f; angle < 40.0f; angle += 0.5f) {
+			for (float angle = -viewAngle; angle < viewAngle; angle += 1.0f) {
 				ray.direction = Quaternion.Euler(0, angle, 0) * direction;
-				if (Physics.Raycast(ray, out hit, sight)) {
+				if (Physics.Raycast(ray, out hit, viewLength)) {
 					if (hit.collider.tag == enemyTag ) {
 						shoot(hit.transform.position);
 						return;
@@ -44,7 +45,7 @@ public class Shooting : MonoBehaviour {
 		GameObject shoot = (GameObject) Instantiate(bullet, t, Quaternion.identity);
 		Bullet script = shoot.GetComponent<Bullet> ();
 		script.destination = enemyPos;
-		script.speed = 20;
+		//script.speed = 40;
 		script.enemyTag = enemyTag;
 		script.go = true;
 
