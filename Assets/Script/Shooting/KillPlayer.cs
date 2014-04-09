@@ -3,6 +3,7 @@ using System.Collections;
 
 public class KillPlayer : MonoBehaviour {
 
+	public GameObject playerExplosion;
 	public Commander commander;
 	public GameObject respawn;
 	public GameObject flag;
@@ -21,14 +22,18 @@ public class KillPlayer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(dead) timer += Time.deltaTime;
-		if (timer > timeToRespoun){
-			timer = 0;
-			dead = false;
+		if(dead) {
+			timer += Time.deltaTime;
+			if (timer > timeToRespoun){
+				timer = 0;
+				dead = false;
+			}
 		}
 	}
 
 	public void killPlayer() {
+		Instantiate(playerExplosion, transform.position, transform.rotation);
+
 		if (mover.hasRole) {
 			switch(mover.role){
 			case "catchFlag": commander.playerAssignedFlag = false;
@@ -42,6 +47,8 @@ public class KillPlayer : MonoBehaviour {
 
 		if (mover.hasFlag) {
 			Instantiate(flag, transform.position, Quaternion.identity);
+			mover.hasFlag = false;
+			transform.Find("flag").gameObject.SetActive(false);
 		}
 
 		MonoBehaviour[] scripts = GetComponents<MonoBehaviour> ();
@@ -55,6 +62,5 @@ public class KillPlayer : MonoBehaviour {
 		mover.enabled = true;
 		GetComponent<KillPlayer> ().enabled = true;
 		GetComponent<Shooting> ().enabled = true;
-
 	}
 }

@@ -10,12 +10,10 @@ public class Commander : MonoBehaviour {
 
 	private GameObject[] myTeam;
 //	private GameObject[] enemyTeam;
-	
-	public GameObject flagMyTeam;
-	public GameObject flagEnemyTeam;
+	public string flagTag;
+	private Vector3 flagPos;
 
 	public GameObject flagPrefabs;
-	private Vector3 flagPos;
 
 	public GameObject baseMyTeam;
 	public GameObject baseEnemyTeam;
@@ -34,8 +32,7 @@ public class Commander : MonoBehaviour {
 			myTeam = GameObject.FindGameObjectsWithTag ("team2");
 //			enemyTeam = GameObject.FindGameObjectsWithTag ("team1");
 		}
-		flagPos = flagMyTeam.transform.position;
-
+		flagPos = getFlagObject ().transform.position;
 		/*
 		rolesToAssigne.Add ("chatchFlag");
 		rolesToAssigne.Add ("helpFlag");
@@ -63,7 +60,7 @@ public class Commander : MonoBehaviour {
 				if (isRespawnZone) {
 					if(!playerAssignedFlag) {
 						catchFlagRole role = player.GetComponent<catchFlagRole>();
-						role.flag = flagMyTeam;
+						role.flagTag = flagTag;
 						role.basePos = baseMyTeam;
 						role.enabled = true;
 						playerAssignedFlag = true;
@@ -87,6 +84,10 @@ public class Commander : MonoBehaviour {
 	private bool inRespawnZone(GameObject player) {
 		return Vector3.Distance (player.transform.position, 
 		                         baseMyTeam.transform.position) < respownArea;
+	}
+
+	private GameObject getFlagObject() {
+		return GameObject.FindGameObjectWithTag(flagTag);
 	}
 	/*
 	private string pickRole() {

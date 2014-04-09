@@ -61,6 +61,16 @@
      <Compile Include="Assets\Script\Shooting\Bullet.cs" />
      <Compile Include="Assets\Script\Shooting\KillPlayer.cs" />
      <Compile Include="Assets\Script\Shooting\Shooting.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_BGScroller.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_DestroyByBoundary.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_DestroyByContact.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_DestroyByTime.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_EvasiveManeuver.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_GameController.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_Mover.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_PlayerController.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_RandomRotator.cs" />
+     <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_WeaponController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
