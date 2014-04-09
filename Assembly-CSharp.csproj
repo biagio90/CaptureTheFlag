@@ -54,10 +54,11 @@
      <Compile Include="Assets\Script\Movement\Astar\AstarCreator.cs" />
      <Compile Include="Assets\Script\Movement\MoveRobot.cs" />
      <Compile Include="Assets\Script\Movement\MoveRobotAstar.cs" />
-     <Compile Include="Assets\Script\PlayerController.cs" />
+     <Compile Include="Assets\Script\PlayerController\PlayerController.cs" />
      <Compile Include="Assets\Script\Role\Roles.cs" />
      <Compile Include="Assets\Script\Shooting\Bullet.cs" />
      <Compile Include="Assets\Script\Shooting\Shooting.cs" />
+     <Compile Include="Assets\Script\Shooting\followEnemy.cs" />
      <Compile Include="Assets\Script\ShowView.cs" />
      <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_BGScroller.cs" />
      <Compile Include="Assets\shooterProject\Done\Done_Scripts\Done_DestroyByBoundary.cs" />

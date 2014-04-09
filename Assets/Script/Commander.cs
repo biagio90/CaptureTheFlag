@@ -71,14 +71,38 @@ public class Commander : MonoBehaviour {
 						if(!playerAssignedFlag) {
 							playerController.role = Roles.Catcher;
 							playerAssignedFlag = true;
+							//increaseNumCatcher();
 						} else if(!playerAssignedHelp) {
 							playerAssignedHelp = true;
 							playerController.role = Roles.Helper;
+							//increaseNumHelper();
 						} else {
 							playerController.dest = player.transform.position;
 							playerController.role = Roles.Attacker;
+							//increaseNumAttacker();
 						}
 					}
+				}
+			}
+		}
+
+		countMembers ();
+	}
+
+	private void countMembers() {
+		if(team == 1) {
+			gameController.num_attacker=0;
+			gameController.num_helper = 0;
+			gameController.num_catcher =0;
+			foreach (GameObject player in myTeam) {
+				int role = player.GetComponent<PlayerController>().role;
+				switch(role){
+				case Roles.Catcher: gameController.num_catcher++;
+					break;
+				case Roles.Helper:  gameController.num_helper++;
+					break;
+				case Roles.Attacker: gameController.num_attacker++;
+					break;
 				}
 			}
 		}
@@ -118,4 +142,36 @@ public class Commander : MonoBehaviour {
 	private GameObject getFlagObject() {
 		return GameObject.FindGameObjectWithTag(flagTag);
 	}
+
+	/*
+	public void increaseNumCatcher(){
+		if(team==1)
+			gameController.num_catcher++;
+	}
+
+	public void increaseNumHelper(){
+		if(team==1)
+		gameController.num_helper++;
+	}
+
+	public void increaseNumAttacker(){
+		if(team==1)
+		gameController.num_attacker++;
+	}
+
+	
+	public void decreaseNumCatcher(){
+		if(team==1)
+		gameController.num_catcher--;
+	}
+	
+	public void decreaseNumHelper(){
+		if(team==1)
+		gameController.num_helper--;
+	}
+	
+	public void decreaseNumAttacker(){
+		if(team==1)
+		gameController.num_attacker--;
+	}*/
 }
