@@ -89,25 +89,6 @@ public class Commander : MonoBehaviour {
 		countMembers ();
 	}
 
-	private void countMembers() {
-		if(team == 1) {
-			gameController.num_attacker=0;
-			gameController.num_helper = 0;
-			gameController.num_catcher =0;
-			foreach (GameObject player in myTeam) {
-				int role = player.GetComponent<PlayerController>().role;
-				switch(role){
-				case Roles.Catcher: gameController.num_catcher++;
-					break;
-				case Roles.Helper:  gameController.num_helper++;
-					break;
-				case Roles.Attacker: gameController.num_attacker++;
-					break;
-				}
-			}
-		}
-	}
-
 	private bool checkCatcher() {
 		foreach (GameObject player in myTeam) {
 			PlayerController playerController = player.GetComponent<PlayerController>();
@@ -122,7 +103,10 @@ public class Commander : MonoBehaviour {
 	}
 
 	private GameObject findClosestToFlag() {
-		Vector3 flagPos = getFlagObject ().transform.position;
+		GameObject flagObj = getFlagObject ();
+		if(flagObj == null) return null;
+
+		Vector3 flagPos = flagObj.transform.position;
 		GameObject closest = null;
 		float minDistance = 10000;
 		foreach (GameObject player in myTeam) {
@@ -141,6 +125,42 @@ public class Commander : MonoBehaviour {
 	
 	private GameObject getFlagObject() {
 		return GameObject.FindGameObjectWithTag(flagTag);
+	}
+
+
+	
+	private void countMembers() {
+		if(team == 1){
+			gameController.num_attacker1 =0;
+			gameController.num_helper1   =0;
+			gameController.num_catcher1  =0;
+			foreach (GameObject player in myTeam) {
+				int role = player.GetComponent<PlayerController>().role;
+				switch(role){
+				case Roles.Catcher: gameController.num_catcher1++;
+					break;
+				case Roles.Helper:  gameController.num_helper1++;
+					break;
+				case Roles.Attacker: gameController.num_attacker1++;
+					break;
+				}
+			}
+		} else {
+			gameController.num_attacker2 =0;
+			gameController.num_helper2   =0;
+			gameController.num_catcher2  =0;
+			foreach (GameObject player in myTeam) {
+				int role = player.GetComponent<PlayerController>().role;
+				switch(role){
+				case Roles.Catcher: gameController.num_catcher2++;
+					break;
+				case Roles.Helper:  gameController.num_helper2++;
+					break;
+				case Roles.Attacker: gameController.num_attacker2++;
+					break;
+				}
+			}
+		}
 	}
 
 	/*

@@ -69,6 +69,14 @@ public class MoveRobotAstar : MonoBehaviour {
 		go = true;
 	}
 
+	public void reset() {
+		rigidbody.velocity = Vector3.zero;
+		rigidbody.angularVelocity = Vector3.zero;
+		pathAstar = new ArrayList ();
+		indexAstar = 0;
+
+	}
+
 	// Update is called once per frame
 	void Update () {
 		switch (movement) {
@@ -85,12 +93,21 @@ public class MoveRobotAstar : MonoBehaviour {
 		if(enemy == null) return;
 
 		PlayerController enemyController = enemy.GetComponent<PlayerController> ();
-		if(enemyController != null)
-		if(!enemyController.dead){
-			makeMove (enemy.transform.position);
+		if (enemyController == null) {
+			if (Vector3.Distance(transform.position, 
+			     enemy.transform.position) > 0.5) {
+				makeMove (enemy.transform.position);
+			} else {
+				enemy = null;
+				newDestination(destinationGlobal);
+			}
 		} else {
-			enemy = null;
-			newDestination(destinationGlobal);
+			if(!enemyController.dead){
+				makeMove (enemy.transform.position);
+			} else {
+				enemy = null;
+				newDestination(destinationGlobal);
+			}
 		}
 	}
 

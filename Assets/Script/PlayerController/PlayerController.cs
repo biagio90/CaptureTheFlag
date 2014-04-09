@@ -55,6 +55,11 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
+		if (role == Roles.Catcher) 
+			transform.Find("EyeBall").gameObject.SetActive(true);
+		else 
+			transform.Find("EyeBall").gameObject.SetActive(false);
+
 		if(dead) {
 			timer += Time.deltaTime;
 			if (timer > timeToRespoun){
@@ -78,25 +83,25 @@ public class PlayerController : MonoBehaviour {
 
 	public void changeRole(int newRole) {
 		// reset
-		/*switch(role){
-		case Roles.Catcher: commander.decreaseNumCatcher();
+		role = newRole;
+		//mover.reset ();
+		switch(role){
+		case Roles.Catcher: 
+			goForward = false;
+			cameBack = false;
+			/*if(hasFlag){
+				goForward = false;
+				cameBack = true;
+			} else {
+				goForward = true;
+				cameBack = false;
+			}*/
 			break;
-		case Roles.Helper:  commander.decreaseNumHelper();
+		case Roles.Helper:
 			break;
-		case Roles.Attacker: commander.decreaseNumAttacker();
+		case Roles.Attacker:
 			break;
 		}
-		*/
-		role = newRole;
-		/*
-		switch(role){
-		case Roles.Catcher: commander.increaseNumCatcher();
-			break;
-		case Roles.Helper:  commander.increaseNumHelper();
-			break;
-		case Roles.Attacker: commander.increaseNumAttacker();
-			break;
-		}*/
 	}
 
 	private void catcher() {
@@ -141,9 +146,14 @@ public class PlayerController : MonoBehaviour {
 						target = enemybase.transform.position; //go towards the enemy base at half way
 						range_action = 10; //I don't want them to be too much away from that point
 					}
-					
-		            dest = randomfromflag (range_action,target);
-				                
+
+					bool good = false;
+					while(!good){
+			            dest = randomfromflag (range_action,target);
+						if (dest.x > -27 && dest.x < 27 && dest.z > -20 && dest.z < 20) {
+							good = true;
+						}
+					}     
 					//dest = randomfromflag (20,Vector3.zero);
 					mover.newDestination (dest);
 				}
@@ -162,7 +172,13 @@ public class PlayerController : MonoBehaviour {
 				else {
 					prob_go_enemybase = 10;
 				}
-				dest = getrandomposition (prob_go_enemybase, range_action);
+				bool good = false;
+				while(!good){
+					dest = getrandomposition (prob_go_enemybase, range_action);
+					if (dest.x > -27 && dest.x < 27 && dest.z > -20 && dest.z < 20) {
+						good = true;
+					}
+				}
 				mover.newDestination (dest);
 			}
 		}
@@ -188,16 +204,15 @@ public class PlayerController : MonoBehaviour {
 		
 		if (hasFlag) {
 			Instantiate(flagPrefabs, transform.position, Quaternion.identity);
-			hasFlag = false;
 			transform.Find("flag").gameObject.SetActive(false);
 		}
+		hasFlag = false;
 
 		mover.enabled = false;
 		shooting.enabled = false;
 
-		rigidbody.velocity = Vector3.zero;
 		transform.position = respawn.transform.position;
-		mover.newDestination (respawn.transform.position);
+		mover.reset ();
 		
 		dead = true;
 	}
@@ -223,7 +238,9 @@ public class PlayerController : MonoBehaviour {
 	public void catchTheFLag() {
 		hasFlag = true;
 		if (role != Roles.Catcher) {
+			Debug.Log("change role from "+role+" to "+Roles.Catcher);
 			changeRole(Roles.Catcher);
+			changeRoleCatcherToAttacker();
 		}
 	}
 
@@ -235,7 +252,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 
-	private void changeRoleToCatcher() {
+	private void changeRoleCatcherToAttacker() {
 		foreach (GameObject player in myTeam) {
 			if(player != this) {
 				PlayerController playerController = player.GetComponent<PlayerController>();

@@ -11,9 +11,13 @@ public class GameController : MonoBehaviour {
 	private int scoreTeam1 = 0;
 	private int scoreTeam2 = 0;
 
-	public int num_catcher = 0;
-	public int num_helper = 0;
-	public int num_attacker = 0;
+	public int num_catcher1  = 0;
+	public int num_helper1   = 0;
+	public int num_attacker1 = 0;
+
+	public int num_catcher2  = 0;
+	public int num_helper2   = 0;
+	public int num_attacker2 = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -35,11 +39,17 @@ public class GameController : MonoBehaviour {
 		GUI.Label(new Rect (left, top+hight, width, hight), 
 		          "Team2: "+getScore(2));
 		GUI.Label (new Rect (left, top + hight * 2, width, hight), 
-		          "catcher: " + num_catcher);
+		          "catcher1: " + num_catcher1);
 		GUI.Label (new Rect (left, top + hight * 3, width, hight), 
-		           "catcher: " + num_helper);
+		           "helper1: " + num_helper1);
 		GUI.Label (new Rect (left, top + hight * 4, width, hight), 
-		           "catcher: " + num_attacker);
+		           "attacker1: " + num_attacker1);
+		GUI.Label (new Rect (left, top + hight * 5, width, hight), 
+		           "catcher2: " + num_catcher2);
+		GUI.Label (new Rect (left, top + hight * 6, width, hight), 
+		           "helper2: " + num_helper2);
+		GUI.Label (new Rect (left, top + hight * 7, width, hight), 
+		           "attacker2: " + num_attacker2);
 
 	}
 

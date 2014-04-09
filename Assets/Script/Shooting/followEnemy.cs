@@ -34,9 +34,11 @@ public class followEnemy : MonoBehaviour {
 			for (float angle = -viewAngle; angle < viewAngle; angle += 1.0f) {
 				ray.direction = Quaternion.Euler(0, angle, 0) * direction;
 				if (Physics.Raycast(ray, out hit, viewLength)) {
-					if(hit.collider.tag == enemyFlagTag 
-					   && Vector3.Distance(hit.transform.position, enemyFlagOrigin) > 2){
-						follow(hit.transform.gameObject);
+					if(hit.collider.tag == enemyFlagTag ){
+					   if( Vector3.Distance(hit.transform.position, 
+						                     enemyFlagOrigin) > 1){
+							follow(hit.transform.gameObject);
+						}
 					}
 					else{
 						if (hit.collider.tag == enemyTag ) {
