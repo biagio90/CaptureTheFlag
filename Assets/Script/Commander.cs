@@ -31,12 +31,18 @@ public class Commander : MonoBehaviour {
 	}
 
 	void Update () {
+		if(!checkCatcher()) {
+			GameObject closest = findClosestToFlag();
+			PlayerController playerController = closest.GetComponent<PlayerController>();
+			playerController.role = Roles.Catcher;
+			playerAssignedFlag = true;
+		}
+
 		foreach (GameObject player in myTeam) {
 			PlayerController playerController = player.GetComponent<PlayerController>();
 			if(!playerController.dead) {
 				
 				bool isRespawnZone = inRespawnZone(player);
-//				MoveRobotAstar mover = player.GetComponent<MoveRobotAstar>();
 
 				if(isRespawnZone && playerController.hasFlag) {
 					gameController.increaseScore(team);
@@ -63,11 +69,37 @@ public class Commander : MonoBehaviour {
 		}
 	}
 
+	private bool checkCatcher() {
+		foreach (GameObject player in myTeam) {
+			PlayerController playerController = player.GetComponent<PlayerController>();
+			if (playerController.role == Roles.Catcher) return true;
+		}
+		return false;
+	}
+
 	private bool inRespawnZone(GameObject player) {
 		return Vector3.Distance (player.transform.position, 
 		                         baseMyTeam.transform.position) < respownArea;
 	}
 
+	private GameObject findClosestToFlag() {
+		Vector3 flagPos = getFlagObject ().transform.position;
+		GameObject closest = null;
+		float minDistance = 1000;
+		foreach (GameObject player in myTeam) {
+			PlayerController playerController = player.GetComponent<PlayerController>();
+			if (!playerController.dead) {
+				float dist = Vector3.Distance(player.transform.position,
+				                              flagPos);
+				if (dist < minDistance){
+					minDistance = dist;
+					closest = player;
+				}
+			}
+		}
+		return closest;
+	}
+	
 	private GameObject getFlagObject() {
 		return GameObject.FindGameObjectWithTag(flagTag);
 	}

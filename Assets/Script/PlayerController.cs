@@ -61,6 +61,11 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	public void changeRole(int newRole) {
+		// reset
+		role = newRole;
+	}
+
 	private void catcher() {
 		if (!hasFlag && !goForward) {
 			GameObject flag = getFlagCurrent();
