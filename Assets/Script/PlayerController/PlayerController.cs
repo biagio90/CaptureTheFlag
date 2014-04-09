@@ -3,8 +3,10 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	public enum Character {Soldier, Sniper, Scout};
+	public enum Strategy  {Circle, Half, Dummy};
 
-	public bool dummy;
+	public Strategy strategy;
+
 	private float range_action;
 	private float prob_go_enemybase;
 
@@ -122,67 +124,57 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	private void helper() {
-		
+		attacker ();
 	}
 
 	private void attacker() {
 		Vector3 target;
-		if (!dummy) {
-			if (Vector3.Distance (transform.position, dest) < 1) {
-				// GETRANDOMPOSITION MOVEMENT
-				/*
-				if (Vector3.Distance (transform.position, enemybase.transform.position) > Vector3.Distance (transform.position, respawn.transform.position)){
-				prob_go_enemybase = 80;}
-				else {
-					prob_go_enemybase = 10;
+		if (Vector3.Distance (transform.position, dest) < 1) {
+			switch(strategy) {
+			case Strategy.Circle:
+				if(getFlagEnemyCurrent()!=null){
+					target = getFlagEnemyCurrent().transform.position;
+					range_action = 20;
+				} else {
+					target = enemybase.transform.position; //go towards the enemy base at half way
+					range_action = 10; //I don't want them to be too much away from that point
 				}
-								dest = getrandomposition (prob_go_enemybase, range_action);
-					*/
 
-					if(getFlagEnemyCurrent()!=null){
-						target = getFlagEnemyCurrent().transform.position;
-						range_action = 20;
-					} else {
-						target = enemybase.transform.position; //go towards the enemy base at half way
-						range_action = 10; //I don't want them to be too much away from that point
+				bool good = false;
+				while(!good){
+		            dest = randomfromflag (range_action,target);
+					if (dest.x > -27 && dest.x < 27 && dest.z > -20 && dest.z < 20) {
+						good = true;
 					}
-
-					bool good = false;
-					while(!good){
-			            dest = randomfromflag (range_action,target);
-						if (dest.x > -27 && dest.x < 27 && dest.z > -20 && dest.z < 20) {
-							good = true;
-						}
-					}     
-					//dest = randomfromflag (20,Vector3.zero);
-					mover.newDestination (dest);
-				}
-		} else {
-			if (Vector3.Distance (transform.position, dest) < 1) {
-				//PURE SQUARE MATRIX RANDOM MOVEMENT
-				/* 
-				float x = Random.Range (-20, 20);
-				float z = Random.Range (-20, 20);
-				dest = new Vector3 (x, 1, z);
-				*/
-				// GETRANDOMPOSITION MOVEMENT
+				}     
+				//dest = randomfromflag (20,Vector3.zero);
+				mover.newDestination (dest);
+			break;
+			case Strategy.Half:
 				if (Vector3.Distance (transform.position, 
-				    enemybase.transform.position) > Vector3.Distance (transform.position, respawn.transform.position)){
+				                      enemybase.transform.position) > Vector3.Distance (transform.position, respawn.transform.position)){
 					prob_go_enemybase = 80;}
 				else {
 					prob_go_enemybase = 10;
 				}
-				bool good = false;
-				while(!good){
+				bool good2 = false;
+				while(!good2){
 					dest = getrandomposition (prob_go_enemybase, range_action);
 					if (dest.x > -27 && dest.x < 27 && dest.z > -20 && dest.z < 20) {
-						good = true;
+						good2 = true;
 					}
 				}
 				mover.newDestination (dest);
+				break;
+			case Strategy.Dummy: 
+				//PURE SQUARE MATRIX RANDOM MOVEMENT
+				float x = Random.Range (-20, 20);
+				float z = Random.Range (-20, 20);
+				dest = new Vector3 (x, 1, z);
+				mover.newDestination (dest);
+				break;
 			}
 		}
-
 	}
 
 	public void killPlayer() {
