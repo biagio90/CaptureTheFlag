@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 		checkLastPosition ();
+		checkBoundary ();
 
 		changeCharater (character);
 
@@ -96,7 +97,7 @@ public class PlayerController : MonoBehaviour {
 	private void checkLastPosition () {
 		if (!dead && lastPosition == transform.position) {
 			countLastPosition++;
-			if (countLastPosition == 100) {
+			if (countLastPosition >= 10) {
 				switch(role){
 				case Roles.Catcher: 
 					goForward = false;
@@ -118,6 +119,13 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	private void checkBoundary (){
+		Vector3 pos = transform.position;
+		if (pos.x < -27 || pos.x > 27 || pos.z > 20 || pos.z < -20) {
+			killPlayer();
+		}
+	}
+
 	public void changeRole(int newRole) {
 		// reset
 		role = newRole;
@@ -126,13 +134,6 @@ public class PlayerController : MonoBehaviour {
 		case Roles.Catcher: 
 			goForward = false;
 			cameBack = false;
-			/*if(hasFlag){
-				goForward = false;
-				cameBack = true;
-			} else {
-				goForward = true;
-				cameBack = false;
-			}*/
 			break;
 		case Roles.Helper:
 			break;

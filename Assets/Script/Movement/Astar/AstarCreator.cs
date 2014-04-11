@@ -48,7 +48,10 @@ public class AstarCreator {
 		while (open.Count != 0 && !end) {
 			current = pickUp(open, f_score);
 
-			if (Vector2.Distance(current, dest) < 2*step) {
+			//if (Vector2.Distance(current, dest) < 2*step) {
+			//if (isFree(current, dest)){
+			if (Vector2.Distance(current, dest) < 2*step &&
+			    isFree(current, dest)) {
 				cameFrom[normalize(dest.x), normalize(dest.y)] = current;
 				path = findPath (cameFrom, current, source);
 				end = true;
@@ -87,7 +90,7 @@ public class AstarCreator {
 		}
 
 		path.Reverse();
-		if (path != null && path.Count > 0)
+		//if (path != null && path.Count > 0)
 			path.Add(to);
 
 		//path = optimizePath (path);
@@ -175,11 +178,12 @@ public class AstarCreator {
 	private bool isFree (Vector2 pos1, Vector2 pos2) {
 		Vector3 p = new Vector3 (pos1.x, 1, pos1.y);
 		Vector3 p2 = new Vector3 (pos2.x, 1, pos2.y);
-		Vector3 dir = p2 - p;
-
+		Vector3 dir = (p2 - p).normalized;
+		float sight = (p2 - p).magnitude;
+		
 		Ray ray = new Ray(p, dir);
 		RaycastHit hit = new RaycastHit ();
-		bool collision = Physics.Raycast (ray, out hit, dir.magnitude);
+		bool collision = Physics.Raycast (ray, out hit, sight);
 
 		//bool capsule = Physics.CheckCapsule(p, p2, step);
 		//return (!collision && !capsule);
@@ -195,7 +199,7 @@ public class AstarCreator {
 		Vector3 l = new Vector3 (l2.x, 1, l2.y);
 		Vector3 dir = r - l;
 
-		Ray ray = new Ray(l, dir);
+		Ray ray = new Ray(l, dir.normalized);
 		RaycastHit hit = new RaycastHit ();
 		bool collision = Physics.Raycast (ray, out hit, dir.magnitude);
 

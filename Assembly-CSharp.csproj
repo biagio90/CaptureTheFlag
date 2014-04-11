@@ -51,10 +51,16 @@
      <Compile Include="Assets\Script\Done_DestroyByTime.cs" />
      <Compile Include="Assets\Script\Flag\PickUpFlag.cs" />
      <Compile Include="Assets\Script\GameController.cs" />
+     <Compile Include="Assets\Script\Graph\Area.cs" />
+     <Compile Include="Assets\Script\Graph\ConvexOverlapping.cs" />
+     <Compile Include="Assets\Script\Graph\Graph.cs" />
+     <Compile Include="Assets\Script\Graph\GraphPrint.cs" />
+     <Compile Include="Assets\Script\Graph\Node.cs" />
      <Compile Include="Assets\Script\Interface\ScoreLabel.cs" />
      <Compile Include="Assets\Script\Movement\Astar\AstarCreator.cs" />
      <Compile Include="Assets\Script\Movement\MoveRobot.cs" />
      <Compile Include="Assets\Script\Movement\MoveRobotAstar.cs" />
+     <Compile Include="Assets\Script\Movement\testAstar.cs" />
      <Compile Include="Assets\Script\PlayerController\PlayerController.cs" />
      <Compile Include="Assets\Script\Role\Roles.cs" />
      <Compile Include="Assets\Script\Shooting\Bullet.cs" />

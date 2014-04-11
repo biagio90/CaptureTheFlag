@@ -28,6 +28,9 @@ public class MoveRobotAstar : MonoBehaviour {
 
 	// Debug
 	private bool drawPath = true;
+	private bool no_free_path = false;
+	private Vector3 point1;
+	private Vector3 point2;
 
 	void Start () {
 		mainY = transform.position.y;
@@ -49,10 +52,7 @@ public class MoveRobotAstar : MonoBehaviour {
 	public void standStill(float a) {
 		movement = Movement.Still;
 
-		pathAstar = new ArrayList ();
-		indexAstar = 0;
-		rigidbody.velocity = Vector3.zero;
-		rigidbody.angularVelocity = Vector3.zero;
+		reset ();
 
 		go = false;
 		angle = a;
@@ -60,10 +60,12 @@ public class MoveRobotAstar : MonoBehaviour {
 	}
 
 	public void newDestination(Vector3 destination) {
+		reset ();
 		movement = Movement.Move;
 		destinationGlobal = destination;
 
 		pathAstar = Astar.getPath(transform.position, destination);
+		//if (!isFree(pathAstar)) Debug.Log("WRONG");
 
 		indexAstar = 0;
 		go = true;
@@ -72,7 +74,7 @@ public class MoveRobotAstar : MonoBehaviour {
 	public void reset() {
 		rigidbody.velocity = Vector3.zero;
 		rigidbody.angularVelocity = Vector3.zero;
-		pathAstar = new ArrayList ();
+		pathAstar = null;
 		indexAstar = 0;
 
 	}
@@ -154,9 +156,57 @@ public class MoveRobotAstar : MonoBehaviour {
 
 			if (pathAstar != null) {
 				for (int i=0; i< pathAstar.Count-1; i++) {
+					Vector3 point = (Vector3)pathAstar[i];
+					point.x += 1;
+					point.z += 1;
+					Gizmos.DrawLine((Vector3)pathAstar[i], point);
 					Gizmos.DrawLine((Vector3)pathAstar[i], (Vector3)pathAstar[i+1]);
+				}
+				/*
+				if(no_free_path) {
+					Vector3 point = point1;
+					point.x += 1;
+					point.z += 1;
+					Gizmos.DrawLine(point1, point);
+					point = point2;
+					point.x += 1;
+					point.z += 1;
+					Gizmos.DrawLine(point2, point);
+				}*/
+			}
+		}
+	}
+
+	
+	private bool isFree (ArrayList path) {
+		if (pathAstar != null) {
+			for (int i=0; i< pathAstar.Count-1; i++) {
+				if (!isFree((Vector3)pathAstar[i], (Vector3)pathAstar[i+1])) {
+					Debug.Log("Collision: "+pathAstar[i]+" "+pathAstar[i+1]);
+					point1 = (Vector3)pathAstar[i];
+					point2 = (Vector3)pathAstar[i+1];
+					no_free_path = true;
+					return false;
 				}
 			}
 		}
+		no_free_path = false;
+		return true;// && isFreeRightAndLeft(pos2);
+	}
+
+	private bool isFree (Vector2 pos1, Vector2 pos2) {
+		Vector3 p = new Vector3 (pos1.x, 1, pos1.y);
+		Vector3 p2 = new Vector3 (pos2.x, 1, pos2.y);
+		Vector3 dir = (p2 - p).normalized;
+		float sight = (p2 - p).magnitude;
+		
+		Ray ray = new Ray(p, dir);
+		RaycastHit hit = new RaycastHit ();
+		bool collision = Physics.Raycast (ray, out hit, sight);
+		
+		//bool capsule = Physics.CheckCapsule(p, p2, step);
+		//return (!collision && !capsule);
+		
+		return !collision;// && isFreeRightAndLeft(pos2);
 	}
 }
