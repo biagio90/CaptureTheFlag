@@ -26,7 +26,7 @@ public class Bullet : MonoBehaviour {
 			other.gameObject.GetComponent<PlayerController>().killPlayer();
 		}
 
-		if (other.tag != "bullet"){
+		if (other.tag != "bullet" && other.tag != "flagTeam1" && other.tag != "flagTeam2" ){
 			Destroy(gameObject);
 		}
 	}

@@ -1,14 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\PlayerController\PlayerController.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\Commander.cs">
     <Files>
-      <File FileName="Assets\Script\Commander.cs" Line="55" Column="3" />
-      <File FileName="Assets\Script\Flag\PickUpFlag.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Commander.cs" Line="76" Column="34" />
+      <File FileName="Assets\Script\Flag\PickUpFlag.cs" Line="14" Column="26" />
       <File FileName="Assets\Script\Shooting\Bullet.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\Shooting\Shooting.cs" Line="29" Column="9" />
-      <File FileName="Assets\Script\GameController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\PlayerController\PlayerController.cs" Line="92" Column="2" />
-      <File FileName="Assets\Script\Movement\MoveRobotAstar.cs" Line="39" Column="3" />
+      <File FileName="Assets\Script\Shooting\Shooting.cs" Line="13" Column="32" />
+      <File FileName="Assets\Script\GameController.cs" Line="52" Column="43" />
+      <File FileName="Assets\Script\PlayerController\PlayerController.cs" Line="179" Column="5" />
+      <File FileName="Assets\Script\Movement\MoveRobotAstar.cs" Line="77" Column="3" />
+      <File FileName="Assets\Script\Shooting\followEnemy.cs" Line="57" Column="25" />
+      <File FileName="Assets\Script\Interface\ScoreLabel.cs" Line="23" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

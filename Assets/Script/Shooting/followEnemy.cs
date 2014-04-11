@@ -52,7 +52,7 @@ public class followEnemy : MonoBehaviour {
 	}
 
 	private void follow(GameObject enemy) {
-		if (!playerController.hasFlag) {
+		if (!playerController.hasFlag && playerController.role != Roles.Catcher) {
 			MoveRobotAstar mover = GetComponent<MoveRobotAstar> ();
 			mover.follow (enemy);
 		}

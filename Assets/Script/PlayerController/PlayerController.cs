@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 	public enum Character {Soldier, Sniper, Scout};
 	public enum Strategy  {Circle, Half, Dummy};
 
+	public Character character = Character.Soldier;
 	public Strategy strategy;
 
 	private float range_action;
@@ -45,6 +46,9 @@ public class PlayerController : MonoBehaviour {
 
 	//HELPER
 
+	// some check
+	private Vector3 lastPosition;
+	private int countLastPosition;
 
 	void Start () {
 		range_action = 20;
@@ -54,9 +58,15 @@ public class PlayerController : MonoBehaviour {
 
 		dest = transform.position;
 		myTeam = GameObject.FindGameObjectsWithTag (tag);
+
+		lastPosition = transform.position;
 	}
 
 	void Update () {
+		checkLastPosition ();
+
+		changeCharater (character);
+
 		if (role == Roles.Catcher) 
 			transform.Find("EyeBall").gameObject.SetActive(true);
 		else 
@@ -81,6 +91,31 @@ public class PlayerController : MonoBehaviour {
 				break;
 			}
 		}
+	}
+
+	private void checkLastPosition () {
+		if (!dead && lastPosition == transform.position) {
+			countLastPosition++;
+			if (countLastPosition == 100) {
+				switch(role){
+				case Roles.Catcher: 
+					goForward = false;
+					cameBack = false;
+					catcher();
+					break;
+				case Roles.Helper: helper();
+					break;
+				case Roles.Attacker: 
+					dest = transform.position;
+					attacker();
+					break;
+				}
+			}
+		} else {
+			countLastPosition = 0;
+			lastPosition = transform.position;
+		}
+
 	}
 
 	public void changeRole(int newRole) {
@@ -166,13 +201,14 @@ public class PlayerController : MonoBehaviour {
 				}
 				mover.newDestination (dest);
 				break;
-			case Strategy.Dummy: 
+			case Strategy.Dummy:
 				//PURE SQUARE MATRIX RANDOM MOVEMENT
 				float x = Random.Range (-20, 20);
 				float z = Random.Range (-20, 20);
 				dest = new Vector3 (x, 1, z);
 				mover.newDestination (dest);
 				break;
+
 			}
 		}
 	}

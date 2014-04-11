@@ -26,6 +26,9 @@ public class MoveRobotAstar : MonoBehaviour {
 	// Follow
 	private GameObject enemy;
 
+	// Debug
+	private bool drawPath = true;
+
 	void Start () {
 		mainY = transform.position.y;
 //		playerController = GetComponent<PlayerController> ();
@@ -61,9 +64,6 @@ public class MoveRobotAstar : MonoBehaviour {
 		destinationGlobal = destination;
 
 		pathAstar = Astar.getPath(transform.position, destination);
-		pathAstar.Reverse();
-		if (pathAstar != null && pathAstar.Count > 0)
-			pathAstar.Add(destination);
 
 		indexAstar = 0;
 		go = true;
@@ -148,4 +148,15 @@ public class MoveRobotAstar : MonoBehaviour {
 		rigidbody.velocity = direction * speed;
 	}
 
+	void OnDrawGizmos() {
+		if (drawPath) {
+			Gizmos.color = Color.green;
+
+			if (pathAstar != null) {
+				for (int i=0; i< pathAstar.Count-1; i++) {
+					Gizmos.DrawLine((Vector3)pathAstar[i], (Vector3)pathAstar[i+1]);
+				}
+			}
+		}
+	}
 }

@@ -86,6 +86,10 @@ public class AstarCreator {
 			}
 		}
 
+		path.Reverse();
+		if (path != null && path.Count > 0)
+			path.Add(to);
+
 		//path = optimizePath (path);
 		return path;
 	}
