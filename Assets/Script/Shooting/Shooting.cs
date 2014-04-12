@@ -6,6 +6,7 @@ public class Shooting : MonoBehaviour {
 
 	public float viewLength = 15.0f;
 	public float viewAngle  = 50.0f;
+	public int killProbability = 100;
 	public GameObject bullet;
 	
 	public float delay = 0.8f;
@@ -47,6 +48,7 @@ public class Shooting : MonoBehaviour {
 		script.destination = enemyPos;
 		//script.speed = 40;
 		script.enemyTag = enemyTag;
+		script.killProbability = killProbability;
 		script.go = true;
 
 	}

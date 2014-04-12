@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	public enum Character {Soldier, Sniper, Scout};
-	public enum Strategy  {Circle, Half, Dummy};
+	public enum Strategy  {Circle, Half, Dummy, Neighborhood};
 
 	public Character character = Character.Soldier;
 	public Strategy strategy;
@@ -31,8 +31,8 @@ public class PlayerController : MonoBehaviour {
 	private float timer = 0.0f;
 
 	//script
-	MoveRobotAstar mover;
-	Shooting shooting;
+	public MoveRobotAstar mover;
+	public Shooting shooting;
 
 	//CATCHER
 	private bool cameBack = false;
@@ -43,8 +43,12 @@ public class PlayerController : MonoBehaviour {
 
 	//ATTACKER
 	public Vector3 dest;
+	private Vector3 neighborDest;
+	private Vector3 neighborTarget;
+	private bool neighborOn = false;
 
 	//HELPER
+	GameObject catcherOld;
 
 	// some check
 	private Vector3 lastPosition;
@@ -72,6 +76,11 @@ public class PlayerController : MonoBehaviour {
 			transform.Find("EyeBall").gameObject.SetActive(true);
 		else 
 			transform.Find("EyeBall").gameObject.SetActive(false);
+
+		if (role == Roles.Helper) 
+			transform.Find("WheelBall").gameObject.SetActive(true);
+		else 
+			transform.Find("WheelBall").gameObject.SetActive(false);
 
 		if(dead) {
 			timer += Time.deltaTime;
@@ -160,6 +169,13 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	private void helper() {
+		/*
+		GameObject catcher = getCatcherObject ();
+		if(catcher!=null){// && catcher != catcherOld){
+			catcherOld = catcher;
+			//mover.follow (catcher);
+			transform.position = catcher.transform.position+new Vector3(-2, 0, 2);
+		}*/
 		attacker ();
 	}
 
@@ -205,13 +221,38 @@ public class PlayerController : MonoBehaviour {
 			case Strategy.Dummy:
 				//PURE SQUARE MATRIX RANDOM MOVEMENT
 				float x = Random.Range (-20, 20);
-				float z = Random.Range (-20, 20);
+				float z = Random.Range (-19, 19);
 				dest = new Vector3 (x, 1, z);
 				mover.newDestination (dest);
 				break;
+			
+			case Strategy.Neighborhood:
+				//Debug.Log("dest: "+dest+" neighbor: "+neighborDest);
+				if(!neighborOn){
+					x = Random.Range (-20, 20);
+					z = Random.Range (-19, 19);
+					dest = new Vector3 (x, 1, z);
+					mover.newDestination (dest);
+				} else {
+					if(Vector3.Distance(neighborDest, transform.position)<0.5){
+						Vector3 direction = (neighborTarget - transform.position).normalized;
+						Quaternion _lookRotation = Quaternion.LookRotation (direction);
+						transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, 5 * Time.deltaTime);
+						//float angle = Vector3.Angle(direction, transform.forward);
+						//Quaternion t = Quaternion.Euler(0, angle, 0);
+						//transform.rotation = Quaternion.Slerp(transform.rotation, t, Time.deltaTime);
 
+					}
+				}
+				break;
 			}
 		}
+	}
+
+	public void setNeighborDest(Vector3 dest, Vector3 t) {
+		neighborDest = dest;
+		neighborTarget = t;
+		neighborOn = true;
 	}
 
 	public void killPlayer() {
@@ -251,14 +292,17 @@ public class PlayerController : MonoBehaviour {
 		case Character.Soldier: 
 			shooting.viewAngle = 40;
 			shooting.viewLength = 12;
+			shooting.killProbability = 80;
 			break;
 		case Character.Sniper: 
 			shooting.viewAngle = 20;
 			shooting.viewLength = 20;
+			shooting.killProbability = 100;
 			break;
 		case Character.Scout: 
 			shooting.viewAngle = 60;
 			shooting.viewLength = 7;
+			shooting.killProbability = 60;
 			break;
 
 		}
@@ -291,6 +335,18 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	private GameObject getCatcherObject() {
+		foreach (GameObject player in myTeam) {
+			if(player != this) {
+				PlayerController playerController = player.GetComponent<PlayerController>();
+				if(playerController.role == Roles.Catcher){
+					return player;
+				}
+			}
+		}
+		return null;
 	}
 
 	Vector3	randomfromflag (float range_action,Vector3 center){
@@ -331,5 +387,10 @@ public class PlayerController : MonoBehaviour {
 		//Debug.Log("Destination
 		return (direction + transform.position);
 		
+	}
+
+	void OnDrawGizmos() {
+		Gizmos.color = Color.blue;
+		//Gizmos.DrawRay (transform.position, transform.forward);
 	}
 }

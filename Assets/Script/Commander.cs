@@ -13,6 +13,8 @@ public class Commander : MonoBehaviour {
 	public string flagTag;
 	private Vector3 flagPos;
 
+	public string enemyflagTag;
+
 	public GameObject flagPrefabs;
 
 	public GameObject baseMyTeam;
@@ -20,6 +22,8 @@ public class Commander : MonoBehaviour {
 
 	public bool playerAssignedFlag = false;
 	public bool playerAssignedHelp = false;
+	
+	private Graph graph;
 
 	private bool firstUpdate = true;
 
@@ -42,6 +46,10 @@ public class Commander : MonoBehaviour {
 				myTeam = GameObject.FindGameObjectsWithTag ("team2");
 			}
 			flagPos = getFlagObject ().transform.position;
+			
+			Area[] aree = ConvexOverlapping.divideSpaceIntoArea ();
+			graph = new Graph (aree);
+
 		}
 
 		if(!checkCatcher()) {
@@ -52,6 +60,19 @@ public class Commander : MonoBehaviour {
 				playerAssignedFlag = true;
 			}
 		}
+
+		Vector3[] neighborsBase = graph.getNeighbors (baseEnemyTeam.transform.position);
+		Vector3 nTargetBase = baseEnemyTeam.transform.position;
+		Vector3[] neighbors = null;
+		Vector3 nTarget = Vector3.zero;
+		GameObject enemyFlag = getEnemyFlagObject ();
+		if(enemyFlag!=null){
+			neighbors = graph.getNeighbors (enemyFlag.transform.position);
+			nTarget = enemyFlag.transform.position;
+		}
+
+		int neighborsIndex = 0;
+		int neighborsIndexBase = 0;
 
 		foreach (GameObject player in myTeam) {
 			PlayerController playerController = player.GetComponent<PlayerController>();
@@ -79,7 +100,29 @@ public class Commander : MonoBehaviour {
 						} else {
 							playerController.dest = player.transform.position;
 							playerController.role = Roles.Attacker;
-							//increaseNumAttacker();
+							/*switch(playerController.strategy){
+							case PlayerController.Strategy.Neighborhood:
+								break;
+							}*/
+
+							if (neighbors != null &&
+							    //neighborsIndex < neighbors.Length &&
+							    neighborsIndex < 1 &&
+							    playerController.strategy == PlayerController.Strategy.Neighborhood) {
+								
+									playerController.mover.newDestination(neighbors[neighborsIndex]);
+									playerController.setNeighborDest(neighbors[neighborsIndex], nTarget);
+									neighborsIndex++;
+							} else {
+							if (neighborsBase != null &&
+							    neighborsIndexBase < neighborsBase.Length &&
+							    playerController.strategy == PlayerController.Strategy.Neighborhood) {
+
+									playerController.mover.newDestination(neighborsBase[neighborsIndexBase]);
+									playerController.setNeighborDest(neighborsBase[neighborsIndexBase], nTargetBase);
+									neighborsIndexBase++;
+								}
+							}
 						}
 					}
 				}
@@ -127,7 +170,9 @@ public class Commander : MonoBehaviour {
 		return GameObject.FindGameObjectWithTag(flagTag);
 	}
 
-
+	private GameObject getEnemyFlagObject() {
+		return GameObject.FindGameObjectWithTag(enemyflagTag);
+	}
 	
 	private void countMembers() {
 		if(team == 1){

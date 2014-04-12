@@ -40,6 +40,24 @@ public class Graph {
 		}
 	}
 
+	public Vector3[] getNeighbors(Vector3 position) {
+		int nodePos = findInGraph (position);
+		if(nodePos == -1) return null;
+
+		ArrayList neighbors = new ArrayList();
+		for (int i=0; i<nodes.Length; i++){
+			if(adjacency[nodePos][i] == 1 && i!=nodePos){
+				neighbors.Add(nodes[i].area.center3D);
+			}
+		}
+
+		Vector3[] ret = new Vector3[neighbors.Count];
+		for (int i=0; i<neighbors.Count; i++){
+			ret[i] = (Vector3)neighbors[i];
+		}
+		return ret;
+	}
+
 	public void removenode(Node nod){
 		int index = findindex(nod);
 		int length = nodes.Length;

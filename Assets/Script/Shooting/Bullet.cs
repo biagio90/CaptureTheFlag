@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 	public string enemyTag;
+	public int killProbability;
 
 	public float speed;
 
@@ -23,7 +24,10 @@ public class Bullet : MonoBehaviour {
 		//	Instantiate(explosion, transform.position, transform.rotation);
 		if (other.tag == enemyTag)
 		{
-			other.gameObject.GetComponent<PlayerController>().killPlayer();
+			int probability = Random.Range(0, 100);
+			if(probability < killProbability){
+				other.gameObject.GetComponent<PlayerController>().killPlayer();
+			}
 		}
 
 		if (other.tag != "bullet" && other.tag != "flagTeam1" && other.tag != "flagTeam2" ){
