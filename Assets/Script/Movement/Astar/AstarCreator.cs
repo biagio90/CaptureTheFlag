@@ -48,11 +48,12 @@ public class AstarCreator {
 		while (open.Count != 0 && !end) {
 			current = pickUp(open, f_score);
 
-			//if (Vector2.Distance(current, dest) < 2*step) {
+			if (Vector2.Distance(current, dest) < step) {
 			//if (isFree(current, dest)){
-			if (Vector2.Distance(current, dest) < 2*step &&
-			    isFree(current, dest)) {
-				cameFrom[normalize(dest.x), normalize(dest.y)] = current;
+			//if (Vector2.Distance(current, dest) < 2*step &&
+			//    isFree(current, dest)) {
+			//if (current == dest){
+				//cameFrom[normalize(dest.x), normalize(dest.y)] = current;
 				path = findPath (cameFrom, current, source);
 				end = true;
 			}
@@ -69,6 +70,7 @@ public class AstarCreator {
 				if(isFree(current, downLeft (current)))  neighborhood.Add (downLeft (current));
 				if(isFree(current, downRight (current))) neighborhood.Add (downRight (current));
 				if(isFree(current, upRight (current))) 	 neighborhood.Add (upRight (current));
+				neighborhood = swapRandomlyElements(neighborhood);
 
 				foreach (Vector2 neighbor in neighborhood) {
 					if (!isPresent(close, neighbor)) {
@@ -95,6 +97,24 @@ public class AstarCreator {
 
 		//path = optimizePath (path);
 		return path;
+	}
+
+	private ArrayList swapRandomlyElements(ArrayList array){
+		int length = array.Count;
+		bool[] used = new bool[length];
+		int count = 0;
+		ArrayList ret = new ArrayList ();
+
+		while (count < length) {
+			int rand = Random.Range(0, length);
+			if(!used[rand]){
+				ret.Add(array[rand]);
+				used[rand] = true;
+				count++;
+			}
+		}
+
+		return ret;
 	}
 
 	private ArrayList optimizePath1 (ArrayList path) {

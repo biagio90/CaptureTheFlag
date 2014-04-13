@@ -104,23 +104,23 @@ public class Commander : MonoBehaviour {
 							case PlayerController.Strategy.Neighborhood:
 								break;
 							}*/
-
-							if (neighbors != null &&
-							    //neighborsIndex < neighbors.Length &&
-							    neighborsIndex < 1 &&
-							    playerController.strategy == PlayerController.Strategy.Neighborhood) {
-								
-									playerController.mover.newDestination(neighbors[neighborsIndex]);
-									playerController.setNeighborDest(neighbors[neighborsIndex], nTarget);
-									neighborsIndex++;
-							} else {
 							if (neighborsBase != null &&
 							    neighborsIndexBase < neighborsBase.Length &&
 							    playerController.strategy == PlayerController.Strategy.Neighborhood) {
-
-									playerController.mover.newDestination(neighborsBase[neighborsIndexBase]);
-									playerController.setNeighborDest(neighborsBase[neighborsIndexBase], nTargetBase);
-									neighborsIndexBase++;
+								
+								playerController.mover.newDestination(neighborsBase[neighborsIndexBase]);
+								playerController.setNeighborDest(neighborsBase[neighborsIndexBase], nTargetBase);
+								neighborsIndexBase++;
+							}
+							 else {
+								if (neighbors != null &&
+								    //neighborsIndex < neighbors.Length &&
+								    neighborsIndex < 1 &&
+								    playerController.strategy == PlayerController.Strategy.Neighborhood) {
+									
+									playerController.mover.newDestination(neighbors[neighborsIndex]);
+									playerController.setNeighborDest(neighbors[neighborsIndex], nTarget);
+									neighborsIndex++;
 								}
 							}
 						}

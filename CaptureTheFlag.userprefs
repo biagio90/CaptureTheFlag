@@ -1,13 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\Movement\MoveRobotAstar.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\GameController.cs">
     <Files>
-      <File FileName="Assets\Script\GameController.cs" Line="8" Column="38" />
-      <File FileName="Assets\Script\Movement\Astar\AstarCreator.cs" Line="93" Column="5" />
-      <File FileName="Assets\Script\PlayerController\PlayerController.cs" Line="105" Column="6" />
-      <File FileName="Assets\Script\Commander.cs" Line="49" Column="26" />
-      <File FileName="Assets\Script\Flag\PickUpFlag.cs" Line="11" Column="4" />
-      <File FileName="Assets\Script\Movement\MoveRobotAstar.cs" Line="30" Column="9" />
+      <File FileName="Assets\Script\GameController.cs" Line="51" Column="18" />
+      <File FileName="Assets\Script\GameController.cs" Line="122" Column="1" />
+      <File FileName="Assets\Script\Graph\Graph.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\PlayerController\PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Commander.cs" Line="44" Column="58" />
+      <File FileName="Assets\Script\Movement\MoveRobotAstar.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Movement\Astar\AstarCreator.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

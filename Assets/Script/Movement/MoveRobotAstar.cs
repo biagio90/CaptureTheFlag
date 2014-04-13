@@ -5,7 +5,7 @@ public class MoveRobotAstar : MonoBehaviour {
 	private enum Movement {Move, Still, Follow};
 //	private PlayerController playerController;
 
-	private AstarCreator Astar = new AstarCreator(55, 2);
+	private AstarCreator Astar = new AstarCreator(55, 1);
 
 	public float speed = 10f;
 	public float turnSpeed = 2f;
@@ -137,8 +137,34 @@ public class MoveRobotAstar : MonoBehaviour {
 				if(indexAstar == pathAstar.Count) {
 					indexAstar = 0;
 					go = false;
+					//avoidOverlappingPlayers(destination);
+
 				}
 			}
+		}
+	}
+
+	private void avoidOverlappingPlayers(Vector3 destination){
+		Vector3 up = new Vector3(0, 0, 1);
+		Vector3 down = new Vector3(0, 0, -1);
+		Vector3 right = new Vector3(1, 0, 0);
+		Vector3 left = new Vector3(-1, 0, 0);
+
+		if (!isFree(destination+up)){
+			transform.position = destination+up;
+			return;
+		}
+		if (!isFree(destination+down)){
+			transform.position = destination+down;
+			return;
+		}
+		if (!isFree(destination+right)){
+			transform.position = destination+right;
+			return;
+		}
+		if (!isFree(destination+left)){
+			transform.position = destination+left;
+			return;
 		}
 	}
 
@@ -177,6 +203,26 @@ public class MoveRobotAstar : MonoBehaviour {
 		}
 	}
 
+	private bool isFree (Vector3 p) {
+		//Vector3 p = new Vector3 (pos.x, 1, pos.y);
+		//return !Physics.CheckSphere (p, sight);
+		
+		Collider[] hitColliders = Physics.OverlapSphere(p, 0.5f);
+		int i = 0;
+		bool collision = false;
+		while (i < hitColliders.Length) {
+			//hitColliders[i].SendMessage("AddDamage");
+			//			Debug.Log(hitColliders[i].name);
+			if (hitColliders[i] != this.collider){ 
+			    //(hitColliders[i].tag == "team1" ||
+			 	 //hitColliders[i].tag == "team2")) {
+				collision = true;
+			}
+			i++;
+		}
+		
+		return !collision;
+	}
 	
 	private bool isFree (ArrayList path) {
 		if (pathAstar != null) {
