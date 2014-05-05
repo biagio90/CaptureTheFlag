@@ -27,6 +27,13 @@ public class Commander : MonoBehaviour {
 
 	private bool firstUpdate = true;
 
+	public GameObject leader = null;
+
+	private Vector3[] neighborsBase;
+	private Vector3[] neighbors;
+	private Vector3 nTargetBase;
+	private Vector3 nTarget;
+
 	void Start () {/*
 		if(team == 1){
 			myTeam = GameObject.FindGameObjectsWithTag ("team1");
@@ -61,10 +68,12 @@ public class Commander : MonoBehaviour {
 			}
 		}
 
-		Vector3[] neighborsBase = graph.getNeighbors (baseEnemyTeam.transform.position);
-		Vector3 nTargetBase = baseEnemyTeam.transform.position;
-		Vector3[] neighbors = null;
-		Vector3 nTarget = Vector3.zero;
+
+		
+		neighborsBase = graph.getNeighbors (baseEnemyTeam.transform.position);
+		nTargetBase = baseEnemyTeam.transform.position;
+		neighbors = null;
+		nTarget = Vector3.zero;
 		GameObject enemyFlag = getEnemyFlagObject ();
 		if(enemyFlag!=null){
 			neighbors = graph.getNeighbors (enemyFlag.transform.position);
@@ -104,6 +113,8 @@ public class Commander : MonoBehaviour {
 							case PlayerController.Strategy.Neighborhood:
 								break;
 							}*/
+
+							// FOR NEIGHBOR STRATEGY: send some player to the center and others to the enemy base
 							if (neighborsBase != null &&
 							    neighborsIndexBase < neighborsBase.Length &&
 							    playerController.strategy == PlayerController.Strategy.Neighborhood) {
@@ -123,6 +134,15 @@ public class Commander : MonoBehaviour {
 									neighborsIndex++;
 								}
 							}
+
+							if (playerController.strategy == PlayerController.Strategy.LeaderFollower) {
+								if (leader == null) {
+									leader = player;
+									playerController.setAsLeader(neighborsBase[0]);
+								} else {
+									playerController.setLeaderToFollow(leader);
+								}
+							}
 						}
 					}
 				}
@@ -130,6 +150,11 @@ public class Commander : MonoBehaviour {
 		}
 
 		countMembers ();
+	}
+
+	public void setNewLeader(GameObject leader) {
+		PlayerController pc = leader.GetComponent<PlayerController> ();
+		pc.setAsLeader(neighborsBase[0]);
 	}
 
 	private bool checkCatcher() {

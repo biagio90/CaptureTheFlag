@@ -27,7 +27,7 @@ public class followEnemy : MonoBehaviour {
 		if (Time.time > nextTime) {
 			nextTime = Time.time + delay;
 			
-			Vector3 direction = transform.TransformDirection(Vector3.forward);
+			Vector3 direction = transform.TransformDirection(Vector3.forward).normalized;
 			RaycastHit hit = new RaycastHit ();
 			Ray ray = new Ray(transform.position, direction);
 			

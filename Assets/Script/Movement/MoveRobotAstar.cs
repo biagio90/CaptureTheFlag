@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class MoveRobotAstar : MonoBehaviour {
-	private enum Movement {Move, Still, Follow};
+	private enum Movement {Move, Still, Follow, LeaderFollow};
 //	private PlayerController playerController;
 
-	private AstarCreator Astar = new AstarCreator(55, 1);
+	private AstarCreator Astar = new AstarCreator(60, 2.0f);
 
 	public float speed = 10f;
 	public float turnSpeed = 2f;
@@ -26,11 +26,18 @@ public class MoveRobotAstar : MonoBehaviour {
 	// Follow
 	private GameObject enemy;
 
+	// Leader
+	private GameObject leader;
+	public float followDistance = 10.0f;
+
 	// Debug
 	private bool drawPath = true;
 	private bool no_free_path = false;
 	private Vector3 point1;
 	private Vector3 point2;
+
+
+	private float nextTime = 0.0f;
 
 	void Start () {
 		mainY = transform.position.y;
@@ -47,6 +54,12 @@ public class MoveRobotAstar : MonoBehaviour {
 		go = false;
 
 		enemy = e;
+	}
+
+	public void leaderFollow(GameObject leader) {
+		movement = Movement.LeaderFollow;
+
+		this.leader = leader;
 	}
 
 	public void standStill(float a) {
@@ -88,6 +101,26 @@ public class MoveRobotAstar : MonoBehaviour {
 			break;
 		case Movement.Follow: followMovement();
 			break;
+		case Movement.LeaderFollow: leaderFollowMovement();
+			break;
+		}
+	}
+
+	private void leaderFollowMovement() {
+		if (Time.time > nextTime) {
+			nextTime = Time.time + 0.8f;
+
+			Vector3 dest = leader.transform.position;
+			if (Vector3.Distance (transform.position, dest) > followDistance) {
+				dest = dest + new Vector3(Random.Range(-followDistance/2, followDistance/2),
+				                          0, Random.Range(-followDistance/2, followDistance/2));	
+				Vector3 step = (dest - transform.position).normalized + transform.position;
+				makeMove(step);
+				//newDestination(step);
+			} else {
+				rigidbody.velocity = Vector3.zero;
+				rigidbody.angularVelocity = Vector3.zero;
+			}
 		}
 	}
 
@@ -170,6 +203,10 @@ public class MoveRobotAstar : MonoBehaviour {
 
 	private void makeMove(Vector3 destination) {
 		Vector3 direction = (destination - transform.position).normalized;
+		float sight = (destination - transform.position).magnitude;
+		bool collision = false;
+		//direction = avoidCollision (direction, sight, ref collision);
+
 		Quaternion _lookRotation = Quaternion.LookRotation (direction);
 		transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, turnSpeed * Time.deltaTime);
 		
@@ -178,7 +215,7 @@ public class MoveRobotAstar : MonoBehaviour {
 
 	void OnDrawGizmos() {
 		if (drawPath) {
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.red;
 
 			if (pathAstar != null) {
 				for (int i=0; i< pathAstar.Count-1; i++) {
@@ -254,5 +291,49 @@ public class MoveRobotAstar : MonoBehaviour {
 		//return (!collision && !capsule);
 		
 		return !collision;// && isFreeRightAndLeft(pos2);
+	}
+
+	Vector3 avoidCollision (Vector3 direction, float sight, ref bool collision) {
+		Ray ray = new Ray(transform.position, direction);
+		RaycastHit hit = new RaycastHit ();
+		float angleR = 0.0f, angleL = 0.0f;
+		//Vector3 dir = new Vector3 (direction);
+		
+		collision = false;
+		
+		while (Physics.Raycast(ray, out hit, sight) && 
+		       hit.collider.tag == "wall")
+		{
+			collision = true;
+			//Debug.Log ( "Collision detected " + hit.collider.name);
+			
+			angleL -= 20.0f;
+			ray.direction = Quaternion.Euler(0, angleL, 0) * direction;
+		}
+		
+		//dir.Set (direction);
+
+		ray.direction = direction;
+		while (Physics.Raycast(ray, out hit, sight)&& 
+		       hit.collider.tag == "wall")
+		{
+			collision = true;
+			//Debug.Log ( "Collision detected " + hit.collider.name);
+			
+			angleR += 20.0f;
+			ray.direction = Quaternion.Euler(0, angleR, 0) * direction;
+		}
+
+		if (collision)
+			if (Mathf.Abs(angleL) < Mathf.Abs(angleR+20) )
+				direction = Quaternion.Euler(0, angleL-20, 0) * direction;
+		else 
+			direction = Quaternion.Euler(0, angleR+20, 0) * direction;
+
+		/*
+		if (collision)
+			direction = Quaternion.Euler(0, angleL-20, 0) * direction;
+		*/
+		return direction;
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	public enum Character {Soldier, Sniper, Scout};
-	public enum Strategy  {Circle, Half, Dummy, Neighborhood};
+	public enum Strategy  {Circle, Half, Dummy, Neighborhood, LeaderFollower};
 
 	public Character character = Character.Soldier;
 	public Strategy strategy;
@@ -46,6 +46,10 @@ public class PlayerController : MonoBehaviour {
 	private Vector3 neighborDest;
 	private Vector3 neighborTarget;
 	private bool neighborOn = false;
+
+	//LEADER FOLLOWER
+	public GameObject leader;
+	public bool isLeader;
 
 	//HELPER
 	GameObject catcherOld;
@@ -101,6 +105,17 @@ public class PlayerController : MonoBehaviour {
 				break;
 			}
 		}
+	}
+
+	public void setLeaderToFollow(GameObject leader) {
+		this.leader = leader;
+		mover.leaderFollow (leader);
+	}
+
+	public void setAsLeader(Vector3 dest) {
+		isLeader = true;
+		mover.newDestination (dest);
+		Debug.Log (dest);
 	}
 
 	private void checkLastPosition () {
@@ -202,6 +217,7 @@ public class PlayerController : MonoBehaviour {
 				//dest = randomfromflag (20,Vector3.zero);
 				mover.newDestination (dest);
 			break;
+
 			case Strategy.Half:
 				if (Vector3.Distance (transform.position, 
 				                      enemybase.transform.position) > Vector3.Distance (transform.position, respawn.transform.position)){
@@ -218,6 +234,7 @@ public class PlayerController : MonoBehaviour {
 				}
 				mover.newDestination (dest);
 				break;
+
 			case Strategy.Dummy:
 				//PURE SQUARE MATRIX RANDOM MOVEMENT
 				float x = Random.Range (-20, 20);
@@ -225,6 +242,7 @@ public class PlayerController : MonoBehaviour {
 				dest = new Vector3 (x, 1, z);
 				mover.newDestination (dest);
 				break;
+			
 			
 			case Strategy.Neighborhood:
 				//Debug.Log("dest: "+dest+" neighbor: "+neighborDest);
@@ -242,6 +260,22 @@ public class PlayerController : MonoBehaviour {
 						//Quaternion t = Quaternion.Euler(0, angle, 0);
 						//transform.rotation = Quaternion.Slerp(transform.rotation, t, Time.deltaTime);
 
+					}
+				}
+				break;
+			case Strategy.LeaderFollower:
+				if (!isLeader){
+					GameObject newLeader = null;
+					foreach(GameObject player in myTeam) {
+						PlayerController pc = player.GetComponent<PlayerController>();
+						if(pc.strategy == Strategy.LeaderFollower &&
+						   pc.isLeader){
+							newLeader = player;
+							break;
+						}
+					}
+					if (newLeader != leader){
+						mover.leaderFollow (newLeader);
 					}
 				}
 				break;
@@ -267,6 +301,18 @@ public class PlayerController : MonoBehaviour {
 				//commander.decreaseNumHelper();
 				break;
 			case Roles.Attacker: //commander.decreaseNumAttacker();
+				if (isLeader) {
+					isLeader = false;
+					GameObject newLeader = null;
+					foreach(GameObject player in myTeam) {
+						PlayerController pc = player.GetComponent<PlayerController>();
+						if(pc.strategy == Strategy.LeaderFollower){
+							newLeader = player;
+							break;
+						}
+					}
+					commander.setNewLeader(newLeader);
+				}
 				break;
 			}
 			role = Roles.NoRole;

@@ -21,6 +21,10 @@ public class GameController : MonoBehaviour {
 	public int num_helper2   = 0;
 	public int num_attacker2 = 0;
 
+	public void startMatch() {
+		
+	}
+
 	// Use this for initialization
 	void Start () {
 		GameObject team1 = GameObject.FindGameObjectWithTag ("team1");

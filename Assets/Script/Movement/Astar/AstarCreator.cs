@@ -49,7 +49,7 @@ public class AstarCreator {
 			current = pickUp(open, f_score);
 
 			if (Vector2.Distance(current, dest) < step) {
-			//if (isFree(current, dest)){
+//			if (isFree(current, dest)){
 			//if (Vector2.Distance(current, dest) < 2*step &&
 			//    isFree(current, dest)) {
 			//if (current == dest){

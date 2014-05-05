@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Bullet : MonoBehaviour {
+	public GameObject playerShooter;
 	public string enemyTag;
 	public int killProbability;
 
@@ -26,7 +27,15 @@ public class Bullet : MonoBehaviour {
 		{
 			int probability = Random.Range(0, 100);
 			if(probability < killProbability){
-				other.gameObject.GetComponent<PlayerController>().killPlayer();
+				PlayerController pc = other.gameObject.GetComponent<PlayerController>();
+				if (pc != null) {
+					pc.killPlayer();
+				} else {
+					PlayerRL rl = other.gameObject.GetComponent<PlayerRL>();
+					rl.killPlayer();
+					PlayerRL rlShooter = playerShooter.GetComponent<PlayerRL>();
+					rlShooter.killedEnemy(rl.hasFlag);
+				}
 			}
 		}
 
