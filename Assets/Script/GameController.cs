@@ -2,6 +2,17 @@
 using System.Collections;
 
 public class GameController : MonoBehaviour {
+	public bool started = false;
+
+	// MENU
+	private float left2 = 350, top2 = 200;
+	private float width2 = 250, hight2 = 30;
+	private float offset = 40;
+
+	private int select1 = 0;
+	private int select2 = 0;
+
+	//
 	public int numPlayers;
 	public int endScore = 10;
 	private int winner = 0;
@@ -22,19 +33,21 @@ public class GameController : MonoBehaviour {
 	public int num_attacker2 = 0;
 
 	public void startMatch() {
+		GameObject team1 = GameObject.FindGameObjectWithTag ("team1");
+		GameObject team2 = GameObject.FindGameObjectWithTag ("team2");
 		
+		for (int i=0; i<numPlayers-1; i++) {
+			if(team1!=null) Instantiate(team1, team1.transform.position, team1.transform.rotation);
+			if(team2!=null) Instantiate(team2, team2.transform.position, team2.transform.rotation);
+			
+		}
+
+		started = true;
 	}
 
 	// Use this for initialization
 	void Start () {
-		GameObject team1 = GameObject.FindGameObjectWithTag ("team1");
-		GameObject team2 = GameObject.FindGameObjectWithTag ("team2");
 
-		for (int i=0; i<numPlayers-1; i++) {
-			if(team1!=null) Instantiate(team1, team1.transform.position, team1.transform.rotation);
-			if(team2!=null) Instantiate(team2, team2.transform.position, team2.transform.rotation);
-
-		}
 	}
 
 	private void endOfTheMatch(){
@@ -62,6 +75,50 @@ public class GameController : MonoBehaviour {
 	}
 	
 	void OnGUI() {
+		if (started) {
+			displayPoints();
+			if (winner != 0) {
+				if (GUI.Button (new Rect (left2-offset*2, top2+offset*4, width2, hight2), "Restart")) {
+					Application.LoadLevel(Application.loadedLevel);
+				}
+			}
+		} else {
+			//GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), image);
+			string[] strategies = new string[4] {"Dummy", "Circle", "Half", "Neighbor"};
+
+			GUI.TextField(new Rect(left2-offset*2, top2, 60, hight2), "Team1: ");
+			select1 = GUI.Toolbar(new Rect(left2, top2, width2*1.5f, hight2), 
+			                      select1, strategies);
+
+			GUI.TextField(new Rect(left2-offset*2, top2+offset, 60, hight2), "Team2: ");
+			select2 = GUI.Toolbar(new Rect(left2, top2+offset, width2*1.5f, hight2), 
+			                      select2, strategies);
+
+			if (GUI.Button (new Rect (left2, top2+offset*2, width2, hight2), "Start")) {
+				Debug.Log("Start");
+				chooseStrategy(select1, "team1");
+				chooseStrategy(select2, "team2");
+				startMatch();
+			}
+		}
+	}
+
+	private void chooseStrategy(int selection, string teamTag) {
+		PlayerController player = GameObject.FindGameObjectWithTag (teamTag).GetComponent<PlayerController>();
+		switch (selection) {
+		case 0: player.strategy = PlayerController.Strategy.Dummy;
+			break;
+		case 1: player.strategy = PlayerController.Strategy.Circle;
+			break;
+		case 2: player.strategy = PlayerController.Strategy.Half;
+			break;
+		case 3: player.strategy = PlayerController.Strategy.Neighborhood;
+			break;
+
+		}
+	}
+
+	private void displayPoints() {
 		if (winner != 0) {
 			GUIStyle style = new GUIStyle();
 			style.fontSize = 50;
@@ -77,17 +134,17 @@ public class GameController : MonoBehaviour {
 				GUI.Label(new Rect (Screen.width/2-w/2, Screen.height/2-h, w, h), 
 				          "TEAM 2 WON!!", style);
 			}
-
+			
 			endOfTheMatch();
 		}
-
+		
 		GUI.color = Color.red;
 		GUI.Label(new Rect (left, top, width, hight), 
 		          "Team1: "+getScore(1));
 		GUI.Label(new Rect (left, top+hight, width, hight), 
 		          "Team2: "+getScore(2));
 		GUI.Label (new Rect (left, top + hight * 2, width, hight), 
-		          "catcher1: " + num_catcher1);
+		           "catcher1: " + num_catcher1);
 		GUI.Label (new Rect (left, top + hight * 3, width, hight), 
 		           "helper1: " + num_helper1);
 		GUI.Label (new Rect (left, top + hight * 4, width, hight), 

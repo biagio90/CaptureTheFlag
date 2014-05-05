@@ -45,6 +45,7 @@ public class Commander : MonoBehaviour {
 	}
 
 	void Update () {
+		if (gameController.started) {
 		if (firstUpdate) {
 			firstUpdate = false;
 			if(team == 1){
@@ -150,6 +151,8 @@ public class Commander : MonoBehaviour {
 		}
 
 		countMembers ();
+
+		}
 	}
 
 	public void setNewLeader(GameObject leader) {

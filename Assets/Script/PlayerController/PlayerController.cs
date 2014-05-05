@@ -80,12 +80,12 @@ public class PlayerController : MonoBehaviour {
 			transform.Find("EyeBall").gameObject.SetActive(true);
 		else 
 			transform.Find("EyeBall").gameObject.SetActive(false);
-
+		/*
 		if (role == Roles.Helper) 
 			transform.Find("WheelBall").gameObject.SetActive(true);
 		else 
 			transform.Find("WheelBall").gameObject.SetActive(false);
-
+*/
 		if(dead) {
 			timer += Time.deltaTime;
 			if (timer > timeToRespoun){
